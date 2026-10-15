@@ -1,0 +1,38 @@
+generator client {
+    provider = "prisma-client-js"
+    binaryTargets = ["native", "linux-musl-arm64-openssl-3.0.x"]
+    output = "/home/ubuntu/transmaquila_audit/nextjs_space/node_modules/.prisma/client"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model InvoiceResult {
+  id               String    @id @default(cuid())
+  filename         String    @unique
+  carrierName      String?
+  invoiceNumber    String?
+  loadReference    String?
+  invoiceDate      String?
+  totalAmount      Float?
+  currency         String?
+  confidenceNotes  String?
+  status           String    @default("PENDING")
+  exceptions       String?   // JSON array
+  expectedAmount   Float?
+  expectedCurrency String?
+  discrepancy      Float?
+  matchedLoadId    String?
+  matchedOrigin    String?
+  matchedDest      String?
+  matchedCommodity String?
+  processedAt      DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  @@index([status])
+  @@index([invoiceNumber])
+  @@index([loadReference])
+}
